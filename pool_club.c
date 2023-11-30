@@ -7,6 +7,7 @@
 #include <locale.h>
 #include <time.h>
 #include <string.h>
+#include <Windows.h>
 
 #define MAX_CAD 200
 #define MAX_STR_CAD 51
@@ -22,7 +23,8 @@ void listarAtletas(void);
 void menuPiscina(void);
 void listarPiscinas(void);
 void buscarCadastro(void);
-//void editarCadastro();
+void editarCadastro(void);
+void menuItemEdicao(void);
 //void excluirCadastro();
 
 typedef struct {
@@ -36,6 +38,7 @@ typedef struct {
 
 usuario cliente[MAX_CAD];
 int qtdCadastro = 0;
+int indicadorCadEncontrado = -1;
 
 int main () {
     setlocale(LC_ALL, "Portuguese");
@@ -59,7 +62,7 @@ int main () {
                 break;
             case 3:
                 system("cls");
-//                editarCadastro();
+                editarCadastro();
                 break;
             case 4:
                 system("cls");
@@ -113,6 +116,18 @@ void menuPiscina(void){
     printf("\t*     3. Piscina - 2,50m                                                   *\n");
     printf("\t*     4. Piscina - 3,00m                                                   *\n");
     printf("\t*     5. Sair                                                              *\n");
+    printf("\t****************************************************************************\n");
+}
+
+void menuItemEdicao(void){
+    printf("\t****************************************************************************\n");
+    printf("\t*    Ítens disponíveis para edição                                         *\n");
+    printf("\t*     1. Nome                                                              *\n");
+    printf("\t*     2. CPF                                                               *\n");
+    printf("\t*     3. Endereço                                                          *\n");
+    printf("\t*     4. Idade                                                             *\n");
+    printf("\t*     5. Atleta                                                            *\n");
+    printf("\t*     6. Sair                                                              *\n");
     printf("\t****************************************************************************\n");
 }
 
@@ -191,7 +206,7 @@ void listarCadastros(void) {
             printf("\tNão é atleta.\n");
         }
     }
-    system("pause");
+    Sleep(10000);
     system("cls");
 }
 
@@ -279,13 +294,14 @@ void buscarCadastro(void) {
     char busca[12];
     int valid = 0;
 
+
     //Buscar por CPF ou Matrícula
     printf("Informe o CPF ou matrícula do cliente (informe apenas números): ");
     entradaString(busca, sizeof(busca));
     system("cls");
 
     int tam = strlen(busca);
-    if (tam == 7) {
+    if (tam == 7) {//get matrícula
         for (int i = 0; i < qtdCadastro; i++) {
             if(atoi(busca) == cliente[i].matricula) {
                 printf("\tnome: %s\n", cliente[i].nome);
@@ -293,12 +309,14 @@ void buscarCadastro(void) {
                 printf("\tmatrícula: %d\n", cliente[i].matricula);
                 printf("\tidade: %d\n", cliente[i].idade);
                 valid = 1;
+                Sleep(10000);
+                indicadorCadEncontrado = i;
             }
         }
         if (valid == 0) {
             printf("Matrícula não encontrada");
         }
-    } else if (tam == 11) {
+    } else if (tam == 11) {//get CPF
         for (int i = 0; i < qtdCadastro; i++) {
             if (!strcmp(busca, cliente[i].cpf)) {
                 printf("\tnome: %s\n", cliente[i].nome);
@@ -306,6 +324,7 @@ void buscarCadastro(void) {
                 printf("\tmatrícula: %d\n", cliente[i].matricula);
                 printf("\tidade: %d\n", cliente[i].idade);
                 valid = 1;
+                indicadorCadEncontrado = i;
             }
         }
         if (valid == 0) {
@@ -314,6 +333,75 @@ void buscarCadastro(void) {
     } else {
         printf("Número informado é inválido.");
     }
-    system("pause");
-    system("cls");
+    Sleep(10000);
 }
+
+void editarCadastro(){
+    //1 - informar qual o cadastro que queremos editar
+    //2 - buscar o cadastro que queremos editar
+    //3 - Mostrar as informações do cadatro
+    buscarCadastro();
+    int opcao;
+    char busca[50];
+    //4 - Perguntar qual item do cadastro o usuário quer editar
+        // 5 - Mostrar um menu para cada tipo de informação existente num cadastro de usuário.
+    do{
+        menuItemEdicao();
+        printf("\nQual informação você deseja editar? ");
+        scanf("%d", &opcao);
+        limpaStdin();
+
+        switch(opcao) {
+            case 1://nome
+                system("cls");
+                    //6 - Informar para usuário digitar o novo valor desejado
+                printf("Digite o novo nome: ");
+                entradaString(busca, sizeof(busca));
+                strcpy(cliente[indicadorCadEncontrado].nome, busca);
+                system("cls");
+                printf("\nNome do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].nome);
+                Sleep(10000);
+                break;
+            case 2:
+                system("cls");
+
+                break;
+            case 3:
+                system("cls");
+
+                break;
+            case 4:
+                system("cls");
+
+                break;
+            case 5:
+                system("cls");
+
+                break;
+            case 6:
+                system("cls");
+                printf("Finalizando o sistema.");
+                break;
+            default:
+                system("cls");
+                printf("Opção inválida.\n");
+        }
+
+    } while(opcao != 6);
+
+
+
+
+
+
+
+
+
+
+
+
+    //7 - Trocar o item do cadastro para o novo valor digitado
+    //8 - Informa para o usuário que a troca foi realizada com sucesso ou não
+        //9 - se foi com sucesso, informamos os novos dados, se não informamos que houve erro.
+}
+
