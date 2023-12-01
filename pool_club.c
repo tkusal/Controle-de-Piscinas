@@ -206,7 +206,7 @@ void listarCadastros(void) {
             printf("\tNão é atleta.\n");
         }
     }
-    Sleep(10000);
+    system("pause");
     system("cls");
 }
 
@@ -309,7 +309,7 @@ void buscarCadastro(void) {
                 printf("\tmatrícula: %d\n", cliente[i].matricula);
                 printf("\tidade: %d\n", cliente[i].idade);
                 valid = 1;
-                Sleep(10000);
+                Sleep(3000);
                 indicadorCadEncontrado = i;
             }
         }
@@ -333,7 +333,7 @@ void buscarCadastro(void) {
     } else {
         printf("Número informado é inválido.");
     }
-    Sleep(10000);
+    Sleep(3000);
 }
 
 void editarCadastro(){
@@ -354,29 +354,62 @@ void editarCadastro(){
         switch(opcao) {
             case 1://nome
                 system("cls");
-                    //6 - Informar para usuário digitar o novo valor desejado
                 printf("Digite o novo nome: ");
                 entradaString(busca, sizeof(busca));
                 strcpy(cliente[indicadorCadEncontrado].nome, busca);
                 system("cls");
                 printf("\nNome do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].nome);
-                Sleep(10000);
+                Sleep(3000);
                 break;
-            case 2:
+            case 2://CPF
                 system("cls");
-
+                printf("Digite o novo CPF: ");
+                entradaString(busca, sizeof(busca));
+                strcpy(cliente[indicadorCadEncontrado].cpf, busca);
+                system("cls");
+                printf("\nCPF do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].cpf);
+                Sleep(3000);
                 break;
-            case 3:
+            case 3://endereco
                 system("cls");
-
+                printf("Digite o novo endereço: ");
+                entradaString(busca, sizeof(busca));
+                strcpy(cliente[indicadorCadEncontrado].endereco, busca);
+                system("cls");
+                printf("\nEndereço do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].endereco);
+                Sleep(3000);
                 break;
-            case 4:
+            case 4://idade
                 system("cls");
-
+                int novaIdade;
+                printf("Digite a idade: ");
+                scanf(" %d", &novaIdade);
+                cliente[indicadorCadEncontrado].idade = novaIdade;
+                system("cls");
+                printf("\nIdade do cliente alterado para %d!\n\n", cliente[indicadorCadEncontrado].idade);
+                Sleep(3000);
                 break;
-            case 5:
+            case 5://atleta
                 system("cls");
-
+                char altera;
+                int eAtleta = cliente[indicadorCadEncontrado].atleta;// 1 = Sim ou 0 = Não
+                if(eAtleta == 1){
+                    printf("O cliente é Atleta, deseja alterar? [s/n] \n");
+                    scanf("%c", &altera);
+                    if(altera == 's' || altera == 'S'){
+                        cliente[indicadorCadEncontrado].atleta = 0;
+                    }else{
+                        break;
+                    }
+                }else {
+                    printf("O cliente não é Atleta, deseja alterar? [s/n] \n");
+                    scanf("%c", &altera);
+                    if(altera == 's' || altera == 'N'){
+                        cliente[indicadorCadEncontrado].atleta = 1;
+                    }else{
+                        break;
+                    }
+                }
                 break;
             case 6:
                 system("cls");
@@ -388,20 +421,5 @@ void editarCadastro(){
         }
 
     } while(opcao != 6);
-
-
-
-
-
-
-
-
-
-
-
-
-    //7 - Trocar o item do cadastro para o novo valor digitado
-    //8 - Informa para o usuário que a troca foi realizada com sucesso ou não
-        //9 - se foi com sucesso, informamos os novos dados, se não informamos que houve erro.
 }
 
