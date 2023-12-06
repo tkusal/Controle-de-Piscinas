@@ -1,5 +1,5 @@
 //**************************
-//File Encoding: ISO-8859-1
+//File Encoding: ISO-8859-1 
 //**************************
 
 #include <stdio.h>
@@ -7,6 +7,11 @@
 #include <locale.h>
 #include <time.h>
 #include <string.h>
+#include <Windows.h>
+
+#define MAX_CAD 200
+#define MAX_STR_CAD 51
+#define MAX_CPF 12
 
 void menu(void);
 int gerarMatricula(void);
@@ -14,16 +19,13 @@ void cadastraUsuario(void);
 void limpaStdin(void);
 void entradaString(char *s, int tam);
 void listarCadastros(void);
-void listarPiscinas(void);
+void listarAtletas(void);
 void menuPiscina(void);
-//void buscarCadastro();
-//void editarCadastro();
-//void listarAtletas();
+void listarPiscinas(void);
+void buscarCadastro(void);
+void editarCadastro(void);
+void menuItemEdicao(void);
 //void excluirCadastro();
-
-#define MAX_CAD 200
-#define MAX_STR_CAD 51
-#define MAX_CPF 12
 
 typedef struct {
     char nome[MAX_STR_CAD];
@@ -36,6 +38,7 @@ typedef struct {
 
 usuario cliente[MAX_CAD];
 int qtdCadastro = 0;
+int indicadorCadEncontrado = -1;
 
 int main () {
     setlocale(LC_ALL, "Portuguese");
@@ -44,7 +47,7 @@ int main () {
 
     do {
         menu();
-        printf("        Escolha uma opÃ§Ã£o: ");
+        printf("        Escolha uma opção: ");
         scanf("%d", &opcao);
         limpaStdin();
 
@@ -55,11 +58,11 @@ int main () {
                 break;
             case 2:
                 system("cls");
-//                buscarCadastro();
+                buscarCadastro();
                 break;
             case 3:
                 system("cls");
-//                editarCadastro();
+                editarCadastro();
                 break;
             case 4:
                 system("cls");
@@ -83,7 +86,7 @@ int main () {
                 break;
             default:
                 system("cls");
-                printf("OpÃ§Ã£oo invÃ¡lida.\n");
+                printf("Opção inválida.\n");
         }
 
     } while(opcao != 8);
@@ -91,10 +94,10 @@ int main () {
     return 0;
 }
 
-void menu() {
+void menu(void) {
     printf("\t****************************************************************************\n");
-    printf("\t*    VocÃª estÃ¡ prestes a ser atendido, escolha uma das opÃ§Ãµes abaixo:      *\n");
-    printf("\t*     1. Cadastrar UsuÃ¡rio                                                 *\n");
+    printf("\t*    Você está prestes a ser atendido, escolha uma das opções abaixo:      *\n");
+    printf("\t*     1. Cadastrar Usuário                                                 *\n");
     printf("\t*     2. Buscar Cadastro                                                   *\n");
     printf("\t*     3. Editar Cadastro                                                   *\n");
     printf("\t*     4. Listar Cadastro                                                   *\n");
@@ -107,7 +110,7 @@ void menu() {
 
 void menuPiscina(void){
     printf("\t****************************************************************************\n");
-    printf("\t*    Qual piscina vocÃª quer listar?                                        *\n");
+    printf("\t*    Qual piscina você quer listar?                                        *\n");
     printf("\t*     1. Piscina - 0.40m                                                   *\n");
     printf("\t*     2. Piscina - 1,50m                                                   *\n");
     printf("\t*     3. Piscina - 2,50m                                                   *\n");
@@ -116,9 +119,21 @@ void menuPiscina(void){
     printf("\t****************************************************************************\n");
 }
 
+void menuItemEdicao(void){
+    printf("\t****************************************************************************\n");
+    printf("\t*    Ítens disponíveis para edição                                         *\n");
+    printf("\t*     1. Nome                                                              *\n");
+    printf("\t*     2. CPF                                                               *\n");
+    printf("\t*     3. Endereço                                                          *\n");
+    printf("\t*     4. Idade                                                             *\n");
+    printf("\t*     5. Atleta                                                            *\n");
+    printf("\t*     6. Sair                                                              *\n");
+    printf("\t****************************************************************************\n");
+}
+
 int gerarMatricula (void) {
     srand(time(NULL));
-    int i = rand();
+    int i = rand() % 9000000 + 1000000;
     return i;
 }
 
@@ -133,15 +148,15 @@ void cadastraUsuario(void) {
         entradaString(cliente[qtdCadastro].nome, sizeof(cliente[qtdCadastro].nome));
         printf("Informe o CPF: ");
         entradaString(cliente[qtdCadastro].cpf, sizeof(cliente[qtdCadastro].cpf));
-        printf("Informe o endereÃ§o: ");
+        printf("Informe o endereço: ");
         entradaString(cliente[qtdCadastro].endereco, sizeof(cliente[qtdCadastro].endereco));
         printf("Informe a idade: ");
         scanf("%d", &cliente[qtdCadastro].idade);
         limpaStdin();
 
         do {
-            //Valida se o cliente Ã© atleta ou nÃ£o
-            printf("O cliente Ã© atleta? (s/n)");
+            //Valida se o cliente é atleta ou não
+            printf("O cliente é atleta? (s/n)");
             scanf("%c",&x);
             limpaStdin();
 
@@ -153,13 +168,14 @@ void cadastraUsuario(void) {
                 valid = 1;
             } else {
                 system("cls");
-                printf("Valor invÃ¡lido.\n\n");
+                printf("Valor inválido.\n\n");
             }
         }while (!valid);
         qtdCadastro++;
     } else {
         printf("Limite de cadastros atingido.");
     }
+    system("cls");
 }
 
 void limpaStdin(void) {
@@ -181,25 +197,39 @@ void listarCadastros(void) {
         printf("\t***************************\n");
         printf("\tnome: %s\n", cliente[i].nome);
         printf("\tCPF: %s\n", cliente[i].cpf);
-        printf("\tmatrÃ­cula: %d\n", cliente[i].matricula);
+        printf("\tmatrícula: %d\n", cliente[i].matricula);
         printf("\tidade: %d\n", cliente[i].idade);
       
         if (cliente[i].atleta == 1) {
-            printf("\tÃ‰ atleta.\n");
+            printf("\tÉ atleta.\n");
         } else {
-            printf("\tNÃ£o Ã© atleta.\n");
+            printf("\tNão é atleta.\n");
         }
-        printf("\t***************************\n");
     }
     system("pause");
     system("cls");
+}
+
+void listarAtletas(void){
+    /* Temos clientes cadastrados no nosso sistema [ok]
+     * temos quer ver quais desses clientes, são atletas [ok]
+     * Imprime na console os clientes que são atletas [ok]
+     * */
+    printf("\t***************************\n");
+    printf("\tOs atletas cadastrados são:\n");
+    for (int i = 0; i < qtdCadastro; ++i) {//iterar a variável cliente atá atingir o número cadastro
+        if(cliente[i].atleta == 1){
+            printf("\t %s\n", cliente[i].nome);
+        }
+    }
+    printf("\t***************************\n\n");
 }
 
 void listarPiscinas(void){
     int opcao;
     do{
         menuPiscina();
-        printf("        Escolha uma opÃ§Ã£o: ");
+        printf("        Escolha uma opção: ");
         scanf("%d", &opcao);
         limpaStdin();
 
@@ -245,7 +275,7 @@ void listarPiscinas(void){
                     if(cliente[i].atleta == 1){
                         printf("\tnome: %s\n", cliente[i].nome);
                         printf("\tidade: %d\n", cliente[i].idade);
-                        printf("\tÃ‰ atleta.\n");
+                        printf("\tÉ atleta.\n");
                     }
                 }
                 break;
@@ -254,8 +284,142 @@ void listarPiscinas(void){
                 break;
             default:
                 system("cls");
-                printf("OpÃ§Ã£o invÃ¡lida.\n");
+                printf("Opção inválida.\n");
         }
         limpaStdin();
     }while(opcao != 5);
 }
+
+void buscarCadastro(void) {
+    char busca[12];
+    int valid = 0;
+
+
+    //Buscar por CPF ou Matrícula
+    printf("Informe o CPF ou matrícula do cliente (informe apenas números): ");
+    entradaString(busca, sizeof(busca));
+    system("cls");
+
+    int tam = strlen(busca);
+    if (tam == 7) {//get matrícula
+        for (int i = 0; i < qtdCadastro; i++) {
+            if(atoi(busca) == cliente[i].matricula) {
+                printf("\tnome: %s\n", cliente[i].nome);
+                printf("\tCPF: %s\n", cliente[i].cpf);
+                printf("\tmatrícula: %d\n", cliente[i].matricula);
+                printf("\tidade: %d\n", cliente[i].idade);
+                valid = 1;
+                Sleep(3000);
+                indicadorCadEncontrado = i;
+            }
+        }
+        if (valid == 0) {
+            printf("Matrícula não encontrada");
+        }
+    } else if (tam == 11) {//get CPF
+        for (int i = 0; i < qtdCadastro; i++) {
+            if (!strcmp(busca, cliente[i].cpf)) {
+                printf("\tnome: %s\n", cliente[i].nome);
+                printf("\tCPF: %s\n", cliente[i].cpf);
+                printf("\tmatrícula: %d\n", cliente[i].matricula);
+                printf("\tidade: %d\n", cliente[i].idade);
+                valid = 1;
+                indicadorCadEncontrado = i;
+            }
+        }
+        if (valid == 0) {
+            printf("CPF não encontrado");
+        }
+    } else {
+        printf("Número informado é inválido.");
+    }
+    Sleep(3000);
+}
+
+void editarCadastro(){
+    //1 - informar qual o cadastro que queremos editar
+    //2 - buscar o cadastro que queremos editar
+    //3 - Mostrar as informações do cadatro
+    buscarCadastro();
+    int opcao;
+    char busca[50];
+    //4 - Perguntar qual item do cadastro o usuário quer editar
+        // 5 - Mostrar um menu para cada tipo de informação existente num cadastro de usuário.
+    do{
+        menuItemEdicao();
+        printf("\nQual informação você deseja editar? ");
+        scanf("%d", &opcao);
+        limpaStdin();
+
+        switch(opcao) {
+            case 1://nome
+                system("cls");
+                printf("Digite o novo nome: ");
+                entradaString(busca, sizeof(busca));
+                strcpy(cliente[indicadorCadEncontrado].nome, busca);
+                system("cls");
+                printf("\nNome do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].nome);
+                Sleep(3000);
+                break;
+            case 2://CPF
+                system("cls");
+                printf("Digite o novo CPF: ");
+                entradaString(busca, sizeof(busca));
+                strcpy(cliente[indicadorCadEncontrado].cpf, busca);
+                system("cls");
+                printf("\nCPF do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].cpf);
+                Sleep(3000);
+                break;
+            case 3://endereco
+                system("cls");
+                printf("Digite o novo endereço: ");
+                entradaString(busca, sizeof(busca));
+                strcpy(cliente[indicadorCadEncontrado].endereco, busca);
+                system("cls");
+                printf("\nEndereço do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].endereco);
+                Sleep(3000);
+                break;
+            case 4://idade
+                system("cls");
+                int novaIdade;
+                printf("Digite a idade: ");
+                scanf(" %d", &novaIdade);
+                cliente[indicadorCadEncontrado].idade = novaIdade;
+                system("cls");
+                printf("\nIdade do cliente alterado para %d!\n\n", cliente[indicadorCadEncontrado].idade);
+                Sleep(3000);
+                break;
+            case 5://atleta
+                system("cls");
+                char altera;
+                int eAtleta = cliente[indicadorCadEncontrado].atleta;// 1 = Sim ou 0 = Não
+                if(eAtleta == 1){
+                    printf("O cliente é Atleta, deseja alterar? [s/n] \n");
+                    scanf("%c", &altera);
+                    if(altera == 's' || altera == 'S'){
+                        cliente[indicadorCadEncontrado].atleta = 0;
+                    }else{
+                        break;
+                    }
+                }else {
+                    printf("O cliente não é Atleta, deseja alterar? [s/n] \n");
+                    scanf("%c", &altera);
+                    if(altera == 's' || altera == 'N'){
+                        cliente[indicadorCadEncontrado].atleta = 1;
+                    }else{
+                        break;
+                    }
+                }
+                break;
+            case 6:
+                system("cls");
+                printf("Finalizando o sistema.");
+                break;
+            default:
+                system("cls");
+                printf("Opção inválida.\n");
+        }
+
+    } while(opcao != 6);
+}
+
