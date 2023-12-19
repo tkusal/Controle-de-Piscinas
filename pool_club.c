@@ -9,7 +9,7 @@
 #include <string.h>
 #include <Windows.h>
 
-#define MAX_CAD 200
+#define MAX_CAD 100
 #define MAX_STR_CAD 51
 #define MAX_CPF 12
 
@@ -25,7 +25,7 @@ void listarPiscinas(void);
 void buscarCadastro(void);
 void editarCadastro(void);
 void menuItemEdicao(void);
-//void excluirCadastro();
+void excluirCadastro(void);
 
 typedef struct {
     char nome[MAX_STR_CAD];
@@ -78,7 +78,7 @@ int main () {
                 break;
             case 7:
                 system("cls");
-//                excluirCadastro();
+                excluirCadastro();
                 break;
             case 8:
                 system("cls");
@@ -90,7 +90,10 @@ int main () {
         }
 
     } while(opcao != 8);
-
+    for(int i = 0 ; i < 100 ; i++){
+        printf("%d", cliente[i].matricula);
+    }
+    system("pause");
     return 0;
 }
 
@@ -191,9 +194,7 @@ void entradaString(char *s, int tam){
 }
 
 void listarCadastros(void) {
-
     for (int i = 0; i < qtdCadastro; ++i) {
-
         printf("\t***************************\n");
         printf("\tnome: %s\n", cliente[i].nome);
         printf("\tCPF: %s\n", cliente[i].cpf);
@@ -423,3 +424,22 @@ void editarCadastro(){
     } while(opcao != 6);
 }
 
+void excluirCadastro(){
+    int matricula;
+    usuario aux;
+
+    system("cls");
+    printf("Informe a matrícula que deseja excluir: ");
+    scanf("%d", &matricula);
+
+    system("cls");
+
+    for (int i = 0 ; i  < qtdCadastro ; i++) {
+        if(cliente[i].matricula == matricula) {
+            aux = cliente[i];
+            cliente[i] = cliente[i + 1];
+            cliente[i + 1] = aux;
+        }
+    }
+    qtdCadastro--;
+}
