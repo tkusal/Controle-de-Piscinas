@@ -47,7 +47,7 @@ int main () {
 
     do {
         menu();
-        printf("        Escolha uma opÁ„o: ");
+        printf("        Escolha uma op√ß√£o: ");
         scanf("%d", &opcao);
         limpaStdin();
 
@@ -86,7 +86,7 @@ int main () {
                 break;
             default:
                 cls();
-                printf("OpÁ„o inv·lida.\n");
+                printf("Op√ß√£o inv√°lida.\n");
         }
 
     } while(opcao != 8);
@@ -96,8 +96,8 @@ int main () {
 
 void menu(void) {
     printf("\t****************************************************************************\n");
-    printf("\t*    VocÍ est· prestes a ser atendido, escolha uma das opÁıes abaixo:      *\n");
-    printf("\t*     1. Cadastrar Usu·rio                                                 *\n");
+    printf("\t*    Voc√™ est√° prestes a ser atendido, escolha uma das op√ß√µes abaixo:      *\n");
+    printf("\t*     1. Cadastrar Usu√°rio                                                 *\n");
     printf("\t*     2. Buscar Cadastro                                                   *\n");
     printf("\t*     3. Editar Cadastro                                                   *\n");
     printf("\t*     4. Listar Cadastro                                                   *\n");
@@ -110,7 +110,7 @@ void menu(void) {
 
 void menuPiscina(void){
     printf("\t****************************************************************************\n");
-    printf("\t*    Qual piscina vocÍ quer listar?                                        *\n");
+    printf("\t*    Qual piscina voc√™ quer listar?                                        *\n");
     printf("\t*     1. Piscina - 0.40m                                                   *\n");
     printf("\t*     2. Piscina - 1,50m                                                   *\n");
     printf("\t*     3. Piscina - 2,50m                                                   *\n");
@@ -121,10 +121,10 @@ void menuPiscina(void){
 
 void menuItemEdicao(void){
     printf("\t****************************************************************************\n");
-    printf("\t*    Õtens disponÌveis para ediÁ„o                                         *\n");
+    printf("\t*    √çtens dispon√≠veis para edi√ß√£o                                         *\n");
     printf("\t*     1. Nome                                                              *\n");
     printf("\t*     2. CPF                                                               *\n");
-    printf("\t*     3. EndereÁo                                                          *\n");
+    printf("\t*     3. Endere√ßo                                                          *\n");
     printf("\t*     4. Idade                                                             *\n");
     printf("\t*     5. Atleta                                                            *\n");
     printf("\t*     6. Sair                                                              *\n");
@@ -148,15 +148,15 @@ void cadastraUsuario(void) {
         entradaString(cliente[qtdCadastro].nome, sizeof(cliente[qtdCadastro].nome));
         printf("Informe o CPF: ");
         entradaString(cliente[qtdCadastro].cpf, sizeof(cliente[qtdCadastro].cpf));
-        printf("Informe o endereÁo: ");
+        printf("Informe o endere√ßo: ");
         entradaString(cliente[qtdCadastro].endereco, sizeof(cliente[qtdCadastro].endereco));
         printf("Informe a idade: ");
         scanf("%d", &cliente[qtdCadastro].idade);
         limpaStdin();
 
         do {
-            //Valida se o cliente È atleta ou n„o
-            printf("O cliente È atleta? (s/n)");
+            //Valida se o cliente √© atleta ou n√£o
+            printf("O cliente √© atleta? (s/n)");
             scanf("%c",&x);
             limpaStdin();
 
@@ -168,7 +168,7 @@ void cadastraUsuario(void) {
                 valid = 1;
             } else {
                 cls();
-                printf("Valor inv·lido.\n\n");
+                printf("Valor inv√°lido.\n\n");
             }
         }while (!valid);
         qtdCadastro++;
@@ -200,20 +200,19 @@ void cls(void) {
 
 void listarCadastros(void) {
 	
-	int i;
 
-    for (i = 0; i < qtdCadastro; ++i) {
+    for (int i = 0; i < qtdCadastro; ++i) {
 
         printf("\t***************************\n");
         printf("\tnome: %s\n", cliente[i].nome);
         printf("\tCPF: %s\n", cliente[i].cpf);
-        printf("\tmatrÌcula: %d\n", cliente[i].matricula);
+        printf("\tmatr√≠cula: %d\n", cliente[i].matricula);
         printf("\tidade: %d\n", cliente[i].idade);
 
         if (cliente[i].atleta == 1) {
-            printf("\t… atleta.\n");
+            printf("\t√â atleta.\n");
         } else {
-            printf("\tN„o È atleta.\n");
+            printf("\tN√£o √© atleta.\n");
         }
     }
     system("pause");
@@ -222,13 +221,12 @@ void listarCadastros(void) {
 
 void listarAtletas(void){
     /* Temos clientes cadastrados no nosso sistema [ok]
-     * temos quer ver quais desses clientes, s„o atletas [ok]
-     * Imprime na console os clientes que s„o atletas [ok]
-     * */
-    int i;
+     * temos quer ver quais desses clientes, s√£o atletas [ok]
+     * Imprime na console os clientes que s√£o atletas [ok]
+     * */    
     printf("\t***************************\n");
-    printf("\tOs atletas cadastrados s„o:\n");
-    for (i = 0; i < qtdCadastro; ++i) {//iterar a vari·vel cliente at· atingir o n˙mero cadastro
+    printf("\tOs atletas cadastrados s√£o:\n");
+    for (int i = 0; i < qtdCadastro; ++i) {//iterar a vari√°vel cliente at√° atingir o n√∫mero cadastro
         if(cliente[i].atleta == 1){
             printf("\t %s\n", cliente[i].nome);
         }
@@ -240,7 +238,7 @@ void listarPiscinas(void){
     int opcao, i;
     do{
         menuPiscina();
-        printf("        Escolha uma opÁ„o: ");
+        printf("        Escolha uma op√ß√£o: ");
         scanf("%d", &opcao);
         limpaStdin();
 
@@ -286,7 +284,7 @@ void listarPiscinas(void){
                     if(cliente[i].atleta == 1){
                         printf("\tnome: %s\n", cliente[i].nome);
                         printf("\tidade: %d\n", cliente[i].idade);
-                        printf("\t… atleta.\n");
+                        printf("\t√â atleta.\n");
                     }
                 }
                 break;
@@ -295,7 +293,7 @@ void listarPiscinas(void){
                 break;
             default:
                 cls();
-                printf("OpÁ„o inv·lida.\n");
+                printf("Op√ß√£o inv√°lida.\n");
         }
         limpaStdin();
     }while(opcao != 5);
@@ -306,19 +304,18 @@ void buscarCadastro(void) {
     int valid = 0;
 
 
-    //Buscar por CPF ou MatrÌcula
-    printf("Informe o CPF ou matrÌcula do cliente (informe apenas n˙meros): ");
+    //Buscar por CPF ou Matr√≠cula
+    printf("Informe o CPF ou matr√≠cula do cliente (informe apenas n√∫meros): ");
     entradaString(busca, sizeof(busca));
     cls();
     
-    int i;
     int tam = strlen(busca);
-    if (tam == 7) {//get matrÌcula
-        for (i = 0; i < qtdCadastro; i++) {
+    if (tam == 7) {//get matr√≠cula
+        for (int i = 0; i < qtdCadastro; i++) {
             if(atoi(busca) == cliente[i].matricula) {
                 printf("\tnome: %s\n", cliente[i].nome);
                 printf("\tCPF: %s\n", cliente[i].cpf);
-                printf("\tmatrÌcula: %d\n", cliente[i].matricula);
+                printf("\tmatr√≠cula: %d\n", cliente[i].matricula);
                 printf("\tidade: %d\n", cliente[i].idade);
                 valid = 1;
                 sleep(3000);
@@ -326,24 +323,24 @@ void buscarCadastro(void) {
             }
         }
         if (valid == 0) {
-            printf("MatrÌcula n„o encontrada");
+            printf("Matr√≠cula n√£o encontrada");
         }
     } else if (tam == 11) {//get CPF
-        for (i = 0; i < qtdCadastro; i++) {
+        for (int i = 0; i < qtdCadastro; i++) {
             if (!strcmp(busca, cliente[i].cpf)) {
                 printf("\tnome: %s\n", cliente[i].nome);
                 printf("\tCPF: %s\n", cliente[i].cpf);
-                printf("\tmatrÌcula: %d\n", cliente[i].matricula);
+                printf("\tmatr√≠cula: %d\n", cliente[i].matricula);
                 printf("\tidade: %d\n", cliente[i].idade);
                 valid = 1;
                 indicadorCadEncontrado = i;
             }
         }
         if (valid == 0) {
-            printf("CPF n„o encontrado");
+            printf("CPF n√£o encontrado");
         }
     } else {
-        printf("N˙mero informado È inv·lido.");
+        printf("N√∫mero informado √© inv√°lido.");
     }
     sleep(3000);
 }
@@ -351,15 +348,15 @@ void buscarCadastro(void) {
 void editarCadastro(){
     //1 - informar qual o cadastro que queremos editar
     //2 - buscar o cadastro que queremos editar
-    //3 - Mostrar as informaÁıes do cadatro
+    //3 - Mostrar as informa√ß√µes do cadatro
     buscarCadastro();
     int opcao;
     char busca[50];
-    //4 - Perguntar qual item do cadastro o usu·rio quer editar
-        // 5 - Mostrar um menu para cada tipo de informaÁ„o existente num cadastro de usu·rio.
+    //4 - Perguntar qual item do cadastro o usu√°rio quer editar
+        // 5 - Mostrar um menu para cada tipo de informa√ß√£o existente num cadastro de usu√°rio.
     do{
         menuItemEdicao();
-        printf("\nQual informaÁ„o vocÍ deseja editar? ");
+        printf("\nQual informa√ß√£o voc√™ deseja editar? ");
         scanf("%d", &opcao);
         limpaStdin();
 
@@ -384,11 +381,11 @@ void editarCadastro(){
                 break;
             case 3://endereco
                 cls();
-                printf("Digite o novo endereÁo: ");
+                printf("Digite o novo endere√ßo: ");
                 entradaString(busca, sizeof(busca));
                 strcpy(cliente[indicadorCadEncontrado].endereco, busca);
                 cls();
-                printf("\nEndereÁo do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].endereco);
+                printf("\nEndere√ßo do cliente alterado para %s!\n\n", cliente[indicadorCadEncontrado].endereco);
                 sleep(3000);
                 break;
             case 4://idade
@@ -404,9 +401,9 @@ void editarCadastro(){
             case 5://atleta
                 cls();
                 char altera;
-                int eAtleta = cliente[indicadorCadEncontrado].atleta;// 1 = Sim ou 0 = N„o
+                int eAtleta = cliente[indicadorCadEncontrado].atleta;// 1 = Sim ou 0 = N√£o
                 if(eAtleta == 1){
-                    printf("O cliente È Atleta, deseja alterar? [s/n] \n");
+                    printf("O cliente √© Atleta, deseja alterar? [s/n] \n");
                     scanf("%c", &altera);
                     if(altera == 's' || altera == 'S'){
                         cliente[indicadorCadEncontrado].atleta = 0;
@@ -414,7 +411,7 @@ void editarCadastro(){
                         break;
                     }
                 }else {
-                    printf("O cliente n„o È Atleta, deseja alterar? [s/n] \n");
+                    printf("O cliente n√£o √© Atleta, deseja alterar? [s/n] \n");
                     scanf("%c", &altera);
                     if(altera == 's' || altera == 'N'){
                         cliente[indicadorCadEncontrado].atleta = 1;
@@ -429,7 +426,7 @@ void editarCadastro(){
                 break;
             default:
                 cls();
-                printf("OpÁ„o inv·lida.\n");
+                printf("Op√ß√£o inv√°lida.\n");
         }
 
     } while(opcao != 6);
